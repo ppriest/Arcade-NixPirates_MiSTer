@@ -1,51 +1,55 @@
 {
-  "_comment": "Core-specific. The main CPU's view of the machine, from the MAME driver's address map. Read by mame_capture.py and write_timing.py. Addresses are hex strings, inclusive.",
+  "_comment": "Core-specific. The main CPU's view of the machine, from MAME src/mame/nix/pirates.cpp prg_map(). Read by mame_capture.py and write_timing.py. Addresses are hex strings, inclusive. vram_lo, txvram, fgvram, bgvram are MAME's split of one RAM at 0x900000-0x904187.",
   "cpu": ":maincpu",
   "space": "program",
   "bus_bytes": 2,
   "big_endian": true,
   "read": {
-    "workram": [
-      "0x000000",
-      "0x00ffff"
-    ]
+    "workram": ["0x100000", "0x10ffff"],
+    "palette": ["0x800000", "0x803fff"],
+    "vram_lo": ["0x900000", "0x90017f"],
+    "txvram":  ["0x900180", "0x90137f"],
+    "fgvram":  ["0x901380", "0x902a7f"],
+    "bgvram":  ["0x902a80", "0x904187"]
   },
   "wtap": {
-    "vregs": [
-      "0x000000",
-      "0x00001f"
-    ]
+    "spriteram": ["0x500000", "0x5007ff"],
+    "out":       ["0x600000", "0x600001"],
+    "scroll":    ["0x700000", "0x700001"]
   },
   "sweep": [
-    "workram",
-    "vregs"
+    "spriteram",
+    "scroll",
+    "out",
+    "palette",
+    "vram_lo",
+    "txvram",
+    "fgvram",
+    "bgvram"
   ],
   "trace": {
     "addr_hi": "0xffffff",
     "io": [
-      "0x000000",
-      "0x000000"
+      ["0x300000", "0x300001"],
+      ["0x400000", "0x400001"],
+      ["0x600000", "0x600001"],
+      ["0xa00000", "0xa00001"]
     ],
-    "vectors": [
-      "0x000000",
-      "0x000000"
-    ],
+    "vectors": ["0x000000", "0x0003ff"],
     "ipl": {
       "reg": "SR",
       "shift": 8,
       "mask": 7
     },
     "rom": [
-      [
-        "0x000000",
-        "0x0fffff"
-      ]
+      ["0x000000", "0x0fffff"]
     ],
     "ram": [
-      [
-        "0x100000",
-        "0x10ffff"
-      ]
+      ["0x100000", "0x10ffff"],
+      ["0x500000", "0x5007ff"],
+      ["0x700000", "0x700001"],
+      ["0x800000", "0x803fff"],
+      ["0x900000", "0x904187"]
     ]
   },
   "inputs": {

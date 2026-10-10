@@ -98,3 +98,6 @@ releases/*.rbf
 **/.DS_Store
 __pycache__/
 *.pyc
+
+# standalone synthesis (scripts/synth_check.py)
+obj_synth/

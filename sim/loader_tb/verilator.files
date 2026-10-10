@@ -1,0 +1,3 @@
++incdir+rtl
+rtl/np_rom_loader.sv
+sim/loader_tb/tb_loader.sv

@@ -1,0 +1,71 @@
+Video-write sweep, MAME 0.289 (C:/Emulation/Emulators/MAME), driver src/mame/nix/pirates.cpp.
+Attract: python scripts/write_timing.py <set> --skip 600 --frames 1800
+Play:    python scripts/write_timing.py <set> --coin 600 --skip 1500 --frames 1800 --tag _play
+Regions from scripts/mame/regions.json "sweep". MAME's frame is 256 lines (pirates.cpp:451), vblank IRQ at line 240.
+Closing snapshots: debug/wtiming/snap/<set>/0000.png, debug/wtiming/snap_play/<set>/0000.png.
+Play runs ended in play: pirates and piratesb at the first scene (static background, no fg/bg writes); genix at stage 2.
+
+== Attract
+pirates: 256 lines, vblank start 240 (16 lines of vblank), 1800 frames
+  region      /frame  +0..1 vblank +0..23  from vblank start, 8 lines a column
+  palette       40.6   0.1%  23.6%  27.8%  |1100000000000000000000000000....|
+  txvram         6.0   0.1%   0.4%   1.3%  |...00..0000000...000000000000000|
+  fgvram        34.5   0.0%   2.3%   9.5%  | 000000000000000000000. ..      |
+  bgvram        41.4   0.1%   1.9%   5.0%  |.0000000000000000000000000000000|
+  spriteram    192.7   9.6%  98.7%  98.9%  |72......                     ...|
+  out            0.2   0.0%  23.3%  40.7%  |.21000000000.00000000.0  ..  0 .|
+  scroll         1.1  93.2%  96.1%  97.0%  |#0.. ....... . . .    . .       |
+
+piratesb: 256 lines, vblank start 240 (16 lines of vblank), 1800 frames
+  region      /frame  +0..1 vblank +0..23  from vblank start, 8 lines a column
+  palette       40.6   0.1%  23.6%  27.8%  |1100000000000000000000000000....|
+  txvram         6.0   0.1%   0.4%   1.3%  |...00..0000000...000000000000000|
+  fgvram        34.4   0.0%   2.3%   9.4%  | 000000000000000000000. ..      |
+  bgvram        41.4   0.1%   1.9%   5.0%  |.0000000000000000000000000000000|
+  spriteram    192.7   9.6%  98.7%  98.9%  |72......                     ...|
+  out            0.2   0.0%  23.3%  40.7%  |.21000000000.00000000.0  ..  0 .|
+  scroll         1.1  93.2%  96.1%  97.0%  |#0.. ....... . . .    . .       |
+
+genix: 256 lines, vblank start 240 (16 lines of vblank), 1800 frames
+  region      /frame  +0..1 vblank +0..23  from vblank start, 8 lines a column
+  palette       79.6   0.2%   2.4%   5.6%  |.0000000000000000000000000000000|
+  vram_lo        0.3   0.0%   0.0%  33.3%  |  3 3 3                         |
+  txvram         9.5   0.0%  23.3%  36.0%  |011100000000           .........|
+  fgvram         5.7   0.1%   4.8%   8.5%  |.00000000000000000.      0000000|
+  bgvram         5.5   0.0%   0.0%   0.0%  |              000011111000000   |
+  spriteram    216.3  22.4%  91.8% 100.0%  |710                   .  .      |
+  out            0.2   0.3%  35.8%  37.6%  |11000000000000000.0.. 0. .. . . |
+  scroll         1.0 100.0% 100.0% 100.0%  |#                               |
+
+== Play
+pirates_play: 256 lines, vblank start 240 (16 lines of vblank), 1800 frames
+  region      /frame  +0..1 vblank +0..23  from vblank start, 8 lines a column
+  palette        3.7   0.0%   0.0%   0.0%  |         03410                  |
+  txvram         5.5   0.0%   0.0%   0.0%  |           .000122100..         |
+  spriteram    412.0  14.9% 100.0% 100.0%  |#0                              |
+  out            0.2   0.0%  12.7%  16.3%  | 10       .013100.              |
+  scroll         1.0 100.0% 100.0% 100.0%  |#                               |
+
+piratesb_play: 256 lines, vblank start 240 (16 lines of vblank), 1800 frames
+  region      /frame  +0..1 vblank +0..23  from vblank start, 8 lines a column
+  palette        3.7   0.0%   0.0%   0.0%  |         03410                  |
+  txvram         5.5   0.0%   0.0%   0.0%  |           .000122100..         |
+  spriteram    412.0  14.9% 100.0% 100.0%  |#0                              |
+  out            0.2   0.0%  12.7%  16.3%  | 10       .013100.              |
+  scroll         1.0 100.0% 100.0% 100.0%  |#                               |
+
+genix_play: 256 lines, vblank start 240 (16 lines of vblank), 1800 frames
+  region      /frame  +0..1 vblank +0..23  from vblank start, 8 lines a column
+  palette        0.7   0.0%   0.0%   0.0%  |         01122100               |
+  txvram         8.3   0.0%  68.9%  87.0%  |1510000     .                   |
+  fgvram         0.1   0.0%  36.5%  86.5%  | 350000                         |
+  spriteram     72.2  82.9% 100.0% 100.0%  |#                               |
+  out            0.2   0.0%  23.4%  25.9%  |010002200000                    |
+  scroll         1.0 100.0% 100.0% 100.0%  |#                               |
+
+
+== Sprites per scanline (python scripts/sprite_load.py <set> --skip 600 --frames 3600; play: --coin 600 --skip 1500 --tag _play)
+pirates: frames 3600 list_max 189 list_mean 50.3 line_max_any 52 line_max_visible 52 worst_frame 2588 worst_line 173 
+genix: frames 3600 list_max 252 list_mean 60.2 line_max_any 21 line_max_visible 21 worst_frame 4124 worst_line 185 
+pirates_play: frames 3600 list_max 176 list_mean 99.1 line_max_any 49 line_max_visible 49 worst_frame 4044 worst_line 168 
+genix_play: frames 3600 list_max 26 list_mean 15.5 line_max_any 7 line_max_visible 7 worst_frame 2006 worst_line 185 

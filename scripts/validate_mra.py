@@ -56,7 +56,9 @@ from coretools import mame_version, setting   # noqa: E402
 # Orientation per set, as the .mra <rotation> tag, for sets whose GAME() line
 # the driver parse misses or that the core rotates differently. Entries here
 # override the driver.
-ROTATION_OVERRIDE = {}
+# pirates.cpp 640-643 write the GAME() rotation as a bare 0, not ROT0, which the
+# driver parse does not read.
+ROTATION_OVERRIDE = {"pirates": "horizontal", "piratesb": "horizontal", "genix": "horizontal"}
 # ---------------------------------------------------------------------------
 
 OSD_COLS = 28                       # Main_MiSTer's DIP line width

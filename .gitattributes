@@ -1,0 +1,14 @@
+*.sh text eol=lf
+scripts/**/*.tcl text eol=lf
+scripts/**/*.lua text eol=lf
+sim/**/*.sh text eol=lf
+# vendored: byte for byte as upstream
+rtl/cpu/fx68k/** -text
+rtl/jtframe/** -text
+sim/models/** -text
+rtl/jteeprom/** -text
+rtl/sound/jt6295/** -text
+rtl/video/crt_adjust.sv -text
+rtl/video/screen_rotate_two.sv -text
+rtl/ddram_phy.sv -text
+rtl/hiscore/hiscore.v -text

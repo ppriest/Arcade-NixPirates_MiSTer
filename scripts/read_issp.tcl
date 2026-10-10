@@ -17,9 +17,49 @@
 # (signed 16), hex or bit. Bit numbers index the probe bus as the RTL
 # concatenates it. Add an entry to the `switch` further down for each table.
 # By convention source bit 0 pulsed is the counter clear.
+# F: NixPirates.sv, "Instance F"
 set fields_F {
-    {frames           0  15 dec}
-    {pll_locked     127 127 bit}
+    {rom_bytes        0  31 dec}
+    {bus_cycles      32  63 dec}
+    {last_addr       64  87 hex}
+    {oki_writes      88 103 dec}
+    {frames         104 111 dec}
+    {rom_loaded     112 112 bit}
+    {core_reset     113 113 bit}
+    {ioctl_download 114 114 bit}
+    {dl_seen_wr     115 115 bit}
+    {ldr_active     116 116 bit}
+    {ldr_done       117 117 bit}
+    {flip           118 118 bit}
+    {pll_locked     119 119 bit}
+    {reset          120 120 bit}
+    {RESET          121 121 bit}
+    {status0        122 122 bit}
+    {buttons1       123 123 bit}
+    {dl0_seen       124 124 bit}
+    {ldr_pending    125 125 bit}
+    {pause_cpu      126 126 bit}
+    {hs_pause       127 127 bit}
+}
+# D, E: NixPirates.sv, "Instance D", "Instance E"
+set fields_D {
+    {core_nz   0  15 dec} {vga_nz   16  31 dec} {pal_nz   32  47 dec} {pen_nz   48  63 dec}
+    {pal_wr   64  79 dec} {vram_wr  80  95 dec} {b1_rdy   96 111 dec} {b2_rdy  112 127 dec}
+}
+set fields_E {
+    {b1_nz     0  15 dec} {b2_nz    16  31 dec} {vis      32  47 dec} {de       48  63 dec}
+    {last_pen 64  76 hex} {last_pal 77  92 hex} {crt_on   93  93 bit} {fb_en    94  94 bit}
+    {fsd      95  95 bit} {dvideo   96  96 bit} {fx       97  99 dec}
+}
+set fields_G {
+    {c0_data   0  15 hex} {c0_addr  16  38 hex} {c0_rw  39  39 bit}
+    {c1_data  40  55 hex} {c1_addr  56  78 hex} {c1_rw  79  79 bit}
+    {c2_data  80  95 hex} {c2_addr  96 118 hex} {c2_rw 119 119 bit} {nvec_lo 120 127 dec}
+}
+set fields_H {
+    {c3_data   0  15 hex} {c3_addr  16  38 hex} {c3_rw  39  39 bit}
+    {c4_data  40  55 hex} {c4_addr  56  78 hex} {c4_rw  79  79 bit}
+    {c5_data  80  95 hex} {c5_addr  96 118 hex} {c5_rw 119 119 bit} {nvec_hi 120 127 dec}
 }
 # ---------------------------------------------------------------------------
 
@@ -86,6 +126,10 @@ if {$want ne ""} {
 # than guesses.
 switch -- $inst_id {
     F       { set fields $fields_F }
+    D       { set fields $fields_D }
+    E       { set fields $fields_E }
+    G       { set fields $fields_G }
+    H       { set fields $fields_H }
     default {
         puts "instance id '$inst_id' has no field table -- add one before reading it"
         exit 1

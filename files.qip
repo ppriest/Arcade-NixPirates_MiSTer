@@ -1,5 +1,73 @@
-set_global_assignment -name VERILOG_FILE rtl/lfsr.v
-set_global_assignment -name SYSTEMVERILOG_FILE rtl/cos.sv
-set_global_assignment -name SYSTEMVERILOG_FILE rtl/mycore.v
+# Every source the project compiles. Vendored blocks name their PROVENANCE.md; none carries local
+# changes.
+
+# fx68k, the 68000 (rtl/cpu/fx68k/PROVENANCE.md; $readmemb from the project directory)
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cpu/fx68k/fx68k.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cpu/fx68k/fx68kAlu.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cpu/fx68k/uaddrPla.sv
+
+# jotego's jtframe, verbatim (rtl/jtframe/PROVENANCE.md): 68000 clock enables, SDRAM controller,
+# ROM slots and caches, tile layers, sprite drawing
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_68kdtack_cen.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_freqinfo.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_bcd_cnt.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_bank.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_init.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_latch.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_rfsh.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_rom_1slot.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_rom_2slots.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_rom_3slots.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq_lcache.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq_bcache.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq_xscache.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_ramslot_ctrl.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_rpwp_ram.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_dual_ram.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_scroll.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_scroll_offset.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_tilemap.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_objdraw.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_objdraw_gate.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_draw.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_obj_buffer.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sh.v
+
+# jotego's jteeprom: the 93C46 (rtl/jteeprom/PROVENANCE.md)
+set_global_assignment -name VERILOG_FILE rtl/jteeprom/jt9346.v
+
+# jotego's JT6295, the M6295 (rtl/sound/PROVENANCE.md)
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295.v
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295_acc.v
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295_adpcm.v
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295_ctrl.v
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295_rom.v
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295_serial.v
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295_sh_rst.v
+set_global_assignment -name VERILOG_FILE rtl/sound/jt6295/hdl/jt6295_timing.v
+
+# CRT adjust (rmonic79, via Arcade-Seta_MiSTer) and HDMI rotation (Sorgelig): rtl/video/PROVENANCE.md
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/video/crt_adjust.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/video/screen_rotate_two.sv
+
+# this core
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_dpram.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_main.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_video.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_rom_loader.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_ddr_loader.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/ddram_phy.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_sound.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/video/np_crt.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/mame_keys.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/debug/issp_probe.sv
+set_global_assignment -name VERILOG_FILE rtl/hiscore/hiscore.v
+set_global_assignment -name SEARCH_PATH rtl
+
+# PLL (regenerate rather than hand-edit beyond the frequencies and phase in rtl/pll/pll_0002.v)
+set_global_assignment -name QIP_FILE rtl/pll.qip
+
 set_global_assignment -name SDC_FILE NixPirates.sdc
 set_global_assignment -name SYSTEMVERILOG_FILE NixPirates.sv

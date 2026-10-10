@@ -692,6 +692,15 @@ throughout. A bench pass then says nothing about the CPU that is on the board. R
 each tool uses (`PROVENANCE.md`), and when only that CPU's behaviour differs on hardware, suspect the
 pair before the RTL around it.
 
+### [NixPirates] Take jtframe_sdram64's pin settings with it: slew rate 0 on the SDRAM outputs
+
+jtframe's MiSTer target sets `SLEW_RATE 0` on every SDRAM output (`target/mister/mister.qsf`;
+`doc/sdram.md`, "SDRAM Electrical Problems (MiSTer)"). Vendoring the controller without its `.qsf`
+left the default. The failure depended on the fit, so a passing build hid it: one fit was black on
+4 of 5 launches (the 68000 looping on the Line 1111 exception, an opcode the ROM does not hold),
+another passed 7 of 7. The failing fit's source with slew 0 (same ALMs and worst slack) passed 8 of
+8. The Verilator SDRAM model has no electrical behaviour, so no bench shows this.
+
 ## Testbench discipline
 
 - **[BallySente] A vendored module's compile WARNING can be a latent fatal.** T80 has carried a

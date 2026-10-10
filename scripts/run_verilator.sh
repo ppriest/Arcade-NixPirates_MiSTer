@@ -20,6 +20,10 @@
 # re-executes itself under that environment when started from Git bash,
 # whose PATH has none of them. hwlock does not apply: Verilator never
 # touches JTAG and is not a Quartus/ModelSim process.
+# --no-assert-case (from Arcade-KonamiGX_MiSTer): fx68k uses `unique case` throughout,
+# and during reset its ALU's operation code matches no branch -- Verilator's runtime
+# check stops the simulation there. Only the case checks are disabled: a bench's own
+# $fatal checks, which Verilator also reports as assertions, keep working.
 set -euo pipefail
 
 TB="${1:?usage: scripts/run_verilator.sh <testbench-dir-name> [-Gparam=v] [plusargs...]}"
@@ -73,7 +77,7 @@ fi
 # (undefined basic_string(&&)). -O2 links, and is the speed setting.
 verilator "${MODE[@]}" --threads "$THREADS" -j 0 -O3 -DSIMULATION \
 	-MAKEFLAGS OPT_FAST=-O2 -MAKEFLAGS OPT_GLOBAL=-O2 \
-	-Wno-fatal -Wno-lint -Wno-style -Wno-TIMESCALEMOD \
+	-Wno-fatal -Wno-lint -Wno-style -Wno-TIMESCALEMOD --no-assert-case \
 	"${GEN[@]+"${GEN[@]}"}" \
 	--top-module "tb_${TB%_tb}" --Mdir "$OUT" -f "sim/$TB/verilator.files" \
 	> "$OUT/build.log" 2>&1 || { grep -E "%Error|error:" "$OUT/build.log" | head -30; exit 1; }

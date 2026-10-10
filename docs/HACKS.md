@@ -21,7 +21,7 @@ Rules:
 
 | What | Where | Why it is a hack | What would make it correct | Evidence | Severity |
 |---|---|---|---|---|---|
-| {{ONE_LINE_WHAT}} | `{{FILE}}:{{LINE}}` | {{WHY}} | {{FIX}} | {{EVIDENCE}} | {{SEVERITY}} |
+| Video timing 384 x 262 at 6 MHz | `rtl/np_video.sv`, `HTOTAL`, `VTOTAL`, sync positions | The driver has no pixel clock or totals (`set_refresh_hz`, `set_size`, 449-452); 6 MHz is the 24 MHz crystal / 4 and 384 x 262 the nearest fit to the PCB notes' 15.69 kHz / 60 Hz: 15.625 kHz (-0.4%), 59.64 Hz (-0.6%). Sync positions are chosen, not known | A PCB measurement of the pixel clock, line and frame | unverified | visible (frame rate) |
 
 <!-- Examples of the shape, from sibling cores:
 | Sound mailbox is a stub that answers the power-on test | `rtl/gx_snd_stub.sv` | No sound CPU yet; the stub returns the reply the test expects and a heartbeat | Phase 3: the real sound board | The game's RAM check passes with it; nothing else is exercised | visible |

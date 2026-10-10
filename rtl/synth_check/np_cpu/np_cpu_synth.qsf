@@ -1,0 +1,66 @@
+# Standalone synthesis of the CPU and SDRAM path (np_cpu_synth_top.sv). Built by
+# scripts/synth_check.py from a snapshot of the committed rtl/, never in the tree.
+# The optimisation settings are NixPirates.qsf's, so the measurement is the core's.
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEBA6U23I7
+set_global_assignment -name TOP_LEVEL_ENTITY np_cpu_synth_top
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP "-40"
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
+set_global_assignment -name TIMEQUEST_MULTICORNER_ANALYSIS OFF
+set_global_assignment -name OPTIMIZE_POWER_DURING_FITTING OFF
+set_global_assignment -name FINAL_PLACEMENT_OPTIMIZATION ALWAYS
+set_global_assignment -name FITTER_EFFORT "STANDARD FIT"
+set_global_assignment -name OPTIMIZATION_MODE "HIGH PERFORMANCE EFFORT"
+set_global_assignment -name ALLOW_POWER_UP_DONT_CARE ON
+set_global_assignment -name QII_AUTO_PACKED_REGISTERS NORMAL
+set_global_assignment -name ROUTER_LCELL_INSERTION_AND_LOGIC_DUPLICATION ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_DUPLICATION ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_REGISTER_RETIMING ON
+set_global_assignment -name OPTIMIZATION_TECHNIQUE SPEED
+set_global_assignment -name MUX_RESTRUCTURE ON
+set_global_assignment -name REMOVE_REDUNDANT_LOGIC_CELLS ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_COMBO_LOGIC_FOR_AREA ON
+set_global_assignment -name ADV_NETLIST_OPT_SYNTH_WYSIWYG_REMAP ON
+set_global_assignment -name SYNTH_GATED_CLOCK_CONVERSION ON
+set_global_assignment -name PRE_MAPPING_RESYNTHESIS ON
+set_global_assignment -name ECO_OPTIMIZE_TIMING ON
+set_global_assignment -name PHYSICAL_SYNTHESIS_ASYNCHRONOUS_SIGNAL_PIPELINING ON
+set_global_assignment -name ALM_REGISTER_PACKING_EFFORT MEDIUM
+set_global_assignment -name SEED 1
+set_global_assignment -name VERILOG_MACRO "JTFRAME_MCLK=48000000"
+
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cpu/fx68k/fx68k.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cpu/fx68k/fx68kAlu.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/cpu/fx68k/uaddrPla.sv
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_68kdtack_cen.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_freqinfo.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_bcd_cnt.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_bank.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_init.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_latch.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_sdram64_rfsh.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_rom_1slot.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_rom_2slots.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq_lcache.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq_bcache.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_romrq_xscache.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_ramslot_ctrl.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_rpwp_ram.v
+set_global_assignment -name VERILOG_FILE rtl/jtframe/jtframe_dual_ram.v
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_dpram.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_main.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/np_rom_loader.sv
+set_global_assignment -name SEARCH_PATH rtl
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/synth_check/np_cpu/np_cpu_synth_top.sv
+set_global_assignment -name SDC_FILE np_cpu_synth.sdc
+
+# Virtual pins: the pad ring must not enter the measurement.
+set_instance_assignment -name VIRTUAL_PIN ON -to rst
+set_instance_assignment -name VIRTUAL_PIN ON -to sdi
+set_instance_assignment -name VIRTUAL_PIN ON -to ld
+set_instance_assignment -name VIRTUAL_PIN ON -to sig[*]
