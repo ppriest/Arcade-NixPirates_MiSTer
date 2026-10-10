@@ -359,6 +359,17 @@ The decisive measurement for the reset bug was counting real commands on `{SDRAM
 SDRAM_nWE}`. Delivery counters and FSM accept-condition counters both looked perfect; only the pin
 count showed zero writes. Measure the last observable stage.
 
+### [NixPirates] Before taking a `hiscore.dat` entry, look for the game's own copy in NVRAM
+
+MAME's `hiscore.dat` had Pirates and Genix, and the driver's TODO calls the EEPROM unexplained, so
+`hiscore.v` went in. The game in fact keeps its score table in the 93C46 and rebuilds work RAM's
+from it at boot. Two copies then disagreed: `hiscore.v` fills its buffer only when the OSD opens,
+but the EEPROM's own save (one second after the game writes it) uploads the whole `.nvm`, so a
+stale or empty hiscore half was saved, and at the next boot `hiscore.v` wrote it over the
+EEPROM's table. Settled in `sim/top_tb`: an EEPROM image with one score changed showed that score
+in work RAM; the board's file with its hiscore half showed that half instead. Decode the NVRAM
+image (the `.nvm` from the board will do) before adding `hiscore.v`.
+
 ## Memory transport: req/valid contracts, latency, byte order
 
 ### Give a registered RAM its full read latency before consuming the data

@@ -38,7 +38,7 @@ one difference from MAME's region is the protection patch below.
 |---|---|---|---|---|
 | `maincpu` | MC68000 | 32 MHz / 2 = 16 MHz, "verified on PCB" (440) | everything | fx68k, in Seta, KonamiGX, BallySente |
 | `oki` | OKI M6295, pin 7 low (/165) | 24 MHz / 18 = 1.3333 MHz, "verified on PCB" (460) | all sound, mono | jt6295, in Fuuki and Vamphalf |
-| `eeprom` | 93C46, 16-bit | serial, bit-banged | settings | jotego `jt5911` (`E:/jtcores/modules/jteeprom`) |
+| `eeprom` | 93C46, 16-bit | serial, bit-banged | score table ("EEPROM" below) | jotego `jt5911` (`E:/jtcores/modules/jteeprom`) |
 | video | 4 x Altera EPM7064 (PCB layout, lines 59-89) | unknown | 3 tilemaps + sprites | none; the CPLDs are undocumented |
 
 The PCB layout also shows a PAL and an 18-pin DIP with its surface scratched off (line 89).
@@ -202,6 +202,15 @@ board hangs the same way (TODO, lines 10-17, and 53-57).
 93C46, 16-bit organisation, on `out_w` bits 0-2 and SYSTEM bit 4. The driver's TODO says the
 EEPROM "doesn't work" and that the program's use of it is not understood (10-12). MAME has no
 default image for any set: the part starts erased.
+
+What the game keeps there (this core's board `.nvm` files and `sim/top_tb`): the score table.
+Words 0x00-0x1d are ten 6-byte entries, best first; the first three bytes hold the score / 100
+shifted left 4 (0x003e80: 1000, 100000 points), the last byte's low nibble the stage, the
+bytes between presumably the name. Words 0x1e-0x1f differ when the table does (a check
+value; the formula was not found). The rest reads 0. At boot the game builds work RAM's table
+(0x10a544 in Pirates, MAME's `hiscore.dat`) from it: an image with the top score changed to
+1250 gave 125000 there (`sim/top_tb +peek=10a544`). So the `.nvm` (the EEPROM alone) carries the
+scores, and the `.mra` has no `hiscore.v` table.
 
 ## Sound
 

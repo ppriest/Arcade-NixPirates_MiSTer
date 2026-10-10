@@ -430,8 +430,10 @@ ignored, as MAME.
    screen on the board; `sim/top_tb` reproduced it (the 93C46's write busy, `docs/MAME_KLUDGES.md`)
    and shows both games' attract after the fix. On the board: Pirates and Genix boot to attract
    (`_stp` at a6e81cb's slew settings, 8 of 8 launches), after `SHIFTED=1` (520db7c) and SDRAM
-   slew rate 0 (a6e81cb). Play, fast load, flip, CRT adjust and hiscore on the board: pending.
-9. Phase 2 features: flip, CRT adjust, crop, rotation, audio mix, fast load, hiscore, ISSP. In
-   simulation: flip (`sim/video_tb --flip`), hiscore restore (`sim/top_tb`). On the board: pending.
+   slew rate 0 (a6e81cb). Play, fast load, flip and CRT adjust on the board: pending.
+9. Phase 2 features: flip, CRT adjust, crop, rotation, audio mix, fast load, ISSP. In
+   simulation: flip (`sim/video_tb --flip`). On the board: pending. High scores: the game keeps
+   its table in the 93C46, so the `.nvm` is the EEPROM alone and the `.mra` has no `hiscore.v`
+   table (HARDWARE_NOTES, "EEPROM"); `hiscore.v` stays in the RTL, idle without one.
 10. Phase 3: sound against MAME in simulation (above); by ear pending.
 11. Phase 5: not planned (above).

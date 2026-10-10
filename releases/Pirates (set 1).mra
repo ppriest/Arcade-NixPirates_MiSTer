@@ -39,15 +39,6 @@
         <part name="s89_49d4.bin" crc="63a739ec"/>
     </rom>
 
-    <!-- hiscore.v's configuration: MAME's hiscore.dat entries -->
-    <rom index="3">
-        <part>
-        19 9A 57 EF 3F FF 00 02 00 02 00 01 00 0F 10 00
-        00 10 A5 44 76 4E 10 00
-        00 10 A5 B0 01 4E 4E 00
-        </part>
-    </rom>
-
-    <!-- the 93C46 (128 bytes), then the hiscore table -->
-    <nvram index="2" size="247"/>
+    <!-- the 93C46, which holds the game's score table -->
+    <nvram index="2" size="128"/>
 </misterromdescription>

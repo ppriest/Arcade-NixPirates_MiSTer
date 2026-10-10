@@ -60,16 +60,9 @@ CATEGORY = "Shooter"   # MiSTer-MAME-Coverage genre (catver): "Shooter / 3rd Per
 REGIONS = ("maincpu", "tiles", "sprites", "oki")
 DL_KEY = {"maincpu": "DL_PRG", "tiles": "DL_TILES", "sprites": "DL_SPRITES", "oki": "DL_OKI"}
 EEPROM_BYTES = 128     # 93C46, 64 x 16 (pirates.cpp 444)
-# Per game: MAME's plugins/hiscore/hiscore.dat entries (address, length, start byte, end byte),
-# read from the MAME 0.289 install. The .nvm is the EEPROM, then these, in order (NixPirates.sv).
-HISCORE = {
-    "pirates": [(0x10a544, 0x76, 0x4e, 0x10), (0x10a5b0, 0x01, 0x4e, 0x4e)],
-    "genix":   [(0x10bd2c, 0x64, 0x4e, 0x10)],
-}
-# hiscore.v's 16-byte header: START_WAIT, CHECK_WAIT, CHECK_HOLD (2 or more: the RAM byte is
-# registered, rtl/hiscore/PROVENANCE.md), WRITE_HOLD, WRITE_REPEATCOUNT, WRITE_REPEATWAIT,
-# ACCESS_PAUSEPAD, CHANGEMASK; Arcade-Psikyo_MiSTer's values
-HISCORE_HEADER = "19 9A 57 EF 3F FF 00 02 00 02 00 01 00 0F 10 00"
+# No hiscore.v configuration: the game keeps its score table in the 93C46 (offsets 0x00-0x3f,
+# docs/HARDWARE_NOTES.md) and rebuilds work RAM's table from it at boot (sim/top_tb +peek), so the
+# .nvm is the EEPROM alone. hiscore.dat's entries restored a second, older copy over it.
 # ---------------------------------------------------------------------------------------------
 
 
@@ -236,17 +229,8 @@ def build(setname, dl, write=True):
         *L,
         "    </rom>",
         "",
-        "    <!-- hiscore.v's configuration: MAME's hiscore.dat entries -->",
-        '    <rom index="3">',
-        "        <part>",
-        f"        {HISCORE_HEADER}",
-        *[f"        {a >> 24:02X} {(a >> 16) & 0xff:02X} {(a >> 8) & 0xff:02X} {a & 0xff:02X} "
-          f"{n:02X} {st:02X} {en:02X} 00" for a, n, st, en in HISCORE[game]],
-        "        </part>",
-        "    </rom>",
-        "",
-        "    <!-- the 93C46 (128 bytes), then the hiscore table -->",
-        f'    <nvram index="2" size="{EEPROM_BYTES + sum(n for _, n, _, _ in HISCORE[game])}"/>',
+        "    <!-- the 93C46, which holds the game's score table -->",
+        f'    <nvram index="2" size="{EEPROM_BYTES}"/>',
         "</misterromdescription>",
         "",
     ]

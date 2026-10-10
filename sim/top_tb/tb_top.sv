@@ -3,8 +3,8 @@
 //
 // The whole core, emu itself, from power-on: the framework around it is sim/top_tb/stubs.sv,
 // the SDRAM sim/models/np_sdram_model.v, and DDR3 a model serving the ROM image for the fast
-// load. The downloads are the .mra's, paced by ioctl_wait as the HPS does, then a reset, as
-// Main_MiSTer gives after loading.
+// load. The downloads are the .mra's, paced by ioctl_wait as the HPS does, under a reset held
+// from the first to after the last, as Main_MiSTer holds status[0].
 //
 //   +image=     the index-0 image (scripts/build_mra.py --image SET FILE)
 //   +mod=       the mod byte (hex), +dsw= the DIP byte (hex)
@@ -15,6 +15,7 @@
 //   +hs_cfg=    hiscore config as index 3 (hex bytes, as the .mra's <rom index="3">)
 //   +nvm=       the .nvm as index 2 (93C46, then the hiscore table)
 //   +frames=    frames to run; +every= write every Nth frame's pixels, +out= their prefix
+//   +peek=      a work RAM address (hex), +peeklen= bytes: printed at the end
 //
 // Per frame it prints the 68000's bus cycles and the load flags: where the board shows black,
 // this says whether the game is running. +cpudbg adds the CPU's state, +trace=N the first N bus
@@ -135,6 +136,8 @@ initial begin : load
 	$fclose(f);
 	$display("image: %0d bytes, %s load, mod %02x, dsw %02x", img_len, fast ? "fast" : "byte", mod, dsw);
 	repeat (32) @(posedge clk);
+	// Main_MiSTer holds status[0] across the whole .mra, nvram included (user_io.cpp 1594-1619)
+	if (!$test$plusargs("noreset")) rst <= 1'b1;
 	dl_download <= 1'b1;
 	dl_index    <= 16'd0;
 	repeat (16) @(posedge clk);         // the HPS's first byte comes well after the download starts
@@ -177,8 +180,7 @@ initial begin : load
 		dl_download <= 1'b0;
 	end
 	repeat (16) @(posedge clk);
-	if (!$test$plusargs("noreset")) begin   // +noreset: no reset after the downloads
-		rst <= 1'b1;
+	if (!$test$plusargs("noreset")) begin   // +noreset: no reset around the downloads
 		repeat (64) @(posedge clk);
 		rst <= 1'b0;
 	end
@@ -197,6 +199,12 @@ end
 
 // --- per frame -------------------------------------------------------------------------------
 integer frame = 0, bus = 0, fo = 0, px = 0, nz = 0;
+integer peek_len = 0;
+reg [23:0] peek_a = 24'd0;
+initial begin
+	void'($value$plusargs("peek=%h", peek_a));
+	void'($value$plusargs("peeklen=%d", peek_len));
+end
 integer cens = 0;
 integer trace_n = 0, ntr = 0;
 reg     as_q = 1'b1;
@@ -228,11 +236,27 @@ always @(posedge clk) begin
 				$display("  cpu: cens %0d as_n %0d ds %b dtack %0d rom_cs %0d rom_ok %0d tState %0d halted %0d",
 				         cens, dut.u_main.as_n, {dut.u_main.uds_n, dut.u_main.lds_n}, dut.u_main.dtack_n,
 				         dut.rom_cs, dut.rom_ok, dut.u_main.u_cpu.tState, dut.u_main.u_cpu.oHALTEDn);
-				$display("  pause: pause_cpu %0d pause_toggle %0d hs_pause %0d hs_configured %0d status82 %0d", dut.pause_cpu, dut.pause_toggle, dut.hs_pause, dut.hs_configured, dut.status[82]);
+				$display("  pause: pause_cpu %0d pause_toggle %0d hs_pause %0d hs_configured %0d status82 %0d; hiscore state %0d next %0d timer %0d dump %0d reset %0d",
+				         dut.pause_cpu, dut.pause_toggle, dut.hs_pause, dut.hs_configured, dut.status[82],
+				         dut.u_hiscore.state, dut.u_hiscore.next_state, dut.u_hiscore.wait_timer,
+				         dut.u_hiscore.downloaded_dump, dut.reset);
 			$fflush();
 			frame = frame + 1;
 			px = 0; nz = 0; palw = 0; vramw = 0;
-			if (frame == frames) $finish;
+			if (frame == frames) begin
+				if (peek_len != 0) begin : peek
+					integer i;
+					reg [15:0] wa;
+					$write("peek %06x:", peek_a);
+					for (i = 0; i < peek_len; i = i + 1) begin
+						wa = (peek_a[15:0] + i[15:0]) >> 1;
+						$write(" %02x", (peek_a[0] ^ i[0]) ? dut.u_main.u_wram.u_lo.mem[wa[14:0]]
+						                                   : dut.u_main.u_wram.u_hi.mem[wa[14:0]]);
+					end
+					$display("");
+				end
+				$finish;
+			end
 			if (every != 0 && frame % every == 0) fo = $fopen($sformatf("%s%0d.rgb", f_out, frame), "wb");
 		end
 		if (vga_de) begin
