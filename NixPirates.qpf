@@ -1,0 +1,4 @@
+QUARTUS_VERSION = "17.0"
+# NixPirates_stp is the instrumented revision (ISSP probes, OSD debug page); NixPirates the release.
+PROJECT_REVISION = "NixPirates_stp"
+PROJECT_REVISION = "NixPirates"
