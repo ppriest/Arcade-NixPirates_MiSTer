@@ -3,18 +3,16 @@
 A MiSTer FPGA core for NIX's Pirates hardware (MAME's `nix/pirates.cpp`), built with Quartus
 Prime 17.0.2 Lite for the DE10-nano.
 
-**Status: in development.** `releases/Arcade-NixPirates_20261010.rbf` (commit `5852eb1`, default
-fitter seed) boots Pirates and Genix Family to their attract modes on a DE10-nano. Play, sound by
-ear, flip, CRT adjust and hiscore saving have not been checked on hardware. Timing met (worst
-`clk_sys` setup slack 4.155 ns); 34,051 of 41,910 ALMs.
+**Status: Released** `releases/Arcade-NixPirates_20261010.rbf` (commit `5852eb1`, default
+fitter seed) boots and plays as well as MAME. These games came from a little-known Spanish developer and the boards are rare/non-existent.
 
 ## Games
 
 | Set | Game | Year | `.mra` | On hardware |
 |-|-|-|-|-|
-| `pirates` | Pirates (set 1) | 1994 | `releases/` | attract |
-| `genix` | Genix Family | 1994 | `releases/` | attract |
-| `piratesb` | Pirates (set 2) | 1995 | `releases/_alternatives/_Pirates/` | not run |
+| `genix` | Genix Family | 1994 | `releases/` | in-game |
+| `pirates` | Pirates (set 1) | 1994 | `releases/` | in-game |
+| `piratesb` | Pirates (set 2) | 1995 | `releases/_alternatives/_Pirates/` | in-game |
 
 ROM sets as MAME 0.289.
 
