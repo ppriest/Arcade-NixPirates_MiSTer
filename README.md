@@ -40,6 +40,14 @@ Special in Genix Family. Pause and Service can be mapped to joystick buttons.
 | Tilemaps, sprites, palette | written for this core (`rtl/np_video.sv`) |
 | ROMs | SDRAM through `jtframe_sdram64` |
 
+### Floorplan
+
+Where the logic sits on the Cyclone V, read from the compiled design with `scripts/floorplan.py` (blocks defined in `scripts/floorplan.json`). One cell per LAB, M10K or DSP site, coloured by the block owning most of it, brighter when fuller. The thin columns are M10K and DSP; the empty area at the top right is the HPS; grey is the MiSTer framework. LUT counts are combinational cells, two per ALM.
+
+Revision `NixPirates`, fitted 10 Oct 2026:
+
+![Floorplan of NixPirates](docs/floorplan/NixPirates.png)
+
 ## Building
 
 `python scripts/build_staged.py --rev NixPirates`, then `python scripts/deploy.py` with a
