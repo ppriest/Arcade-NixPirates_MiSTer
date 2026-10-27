@@ -5,9 +5,8 @@
     python scripts/mame_cheats.py <set>              # what converts, what does not
     python scripts/mame_cheats.py <set> --mra        # the <cheats> block
 
-The codes are for wickerwaka's read-override cheat engine (references/cheats.md in the
-skill): a code replaces, ORs or ANDs a value as the CPU reads it, nothing is written. Each
-<cheat> whose scripts only store constants into the CPU's RAM converts:
+Codes target wickerwaka's read-override engine: they replace, OR, or AND CPU read values;
+they never write. A <cheat> converts when its scripts only store constants in CPU RAM:
 
     maincpu.pb@C08123=03                         replace a byte (pw, pd: word, long)
     maincpu.pb@C08123=maincpu.pb@C08123|80       OR   (& for AND)

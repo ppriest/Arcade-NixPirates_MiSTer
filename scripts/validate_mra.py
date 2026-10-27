@@ -1,48 +1,13 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Validate .mra files before deploying them.
+"""Validate release MRAs before deployment.
 
-WHY
----
-An edit to a comment block once left a `-->` in place that had already closed
-the comment, so the new prose landed in the document as character data. It
-contained a bare `<`, which is illegal in XML, so MiSTer refused the file: the
-DIP switches vanished from the OSD, the ROM never loaded, and the core came
-up on an all-zero image. That looked exactly like a core regression.
-
-Nothing about that failure is visible by reading the diff, and MiSTer's own
-parser is lenient enough that some malformations load fine while others kill
-the file. So check mechanically, every time, before copying an .mra.
-
-Checks:
-  1. The file is well-formed XML (strict -- stricter than MiSTer's parser).
-  2. No element carries stray non-whitespace TEXT content. Every leaked
-     comment block shows up here, including ones MiSTer currently tolerates.
-  3. <switches default="..."> byte count covers the declared bits, and the
-     file declares a <setname> (the .CFG filename depends on it).
-  4. <rotation> matches the set's orientation in the MAME driver's GAME()
-     line (MAME_SRC, from mister.env or the environment): ROT0 ->
-     "horizontal", ROT90 -> "vertical (cw)", ROT270 -> "vertical (ccw)".
-     Skipped, with a note, when the driver is not available.
-  3'. No <dip> above bit 31 and no fifth default byte: Main_MiSTer's int shift
-     sign-extends byte 3 over bits 32-63 and drops byte 4 (mra_loader.cpp).
-  5. Every <dip> fits the OSD: " name:" plus the longest setting within 28
-     columns. Main_MiSTer pads the line with a signed-char count
-     (menu.cpp, MENU_ARCADE_DIP1), so a line that does not fit wraps and the
-     value is pushed off screen: the switch still cycles, invisibly (the Seta
-     core's issue #6, Arbalester's coin switch showing only "1C/1C").
-  6. <mameversion> is present, four digits, and no newer than the installed MAME
-     (a newer one is a typo). Older than the installed MAME is reported, not failed:
-     the set definitions may have changed, so regenerate and re-verify the CRCs.
-  7. <buttons names> are the game's own control names, from the manual or
-     another source, not "Button 1". Start, Coin, Pause, Service, Test and "-"
-     are exempt. --allow-generic-buttons lets early bring-up through.
+Checks XML structure, stray text, required metadata, switch ranges and OSD width,
+button names, and MAME orientation/version when those sources are available.
 
 Usage:
     python scripts/validate_mra.py releases/*.mra
     python scripts/validate_mra.py --allow-generic-buttons releases/*.mra
-Exit status is non-zero if any file fails, so it works as a gate:
-    python scripts/validate_mra.py releases/*.mra && <deploy>
 """
 import glob
 import re

@@ -13,8 +13,8 @@ writes per frame; the share in the first 2 lines after vblank start, in vblank,
 and in the first 24 lines; and a strip of 8-line buckets from vblank start
 (' ' none, '.' under 1%, 0-9 tenths, '#' over 90%).
 
-Decides where sprite/tile snapshots and register latches go: see the skill's
-references/video_write_sweep.md. Run attract and play (--coin): play differs.
+Use the report to place sprite/tile snapshots and register latches. Compare attract and play
+(--coin); their write patterns differ.
 """
 import argparse
 import os

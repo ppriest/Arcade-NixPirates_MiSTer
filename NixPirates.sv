@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Paul Priest
 //
-// NIX's Pirates / Genix Family board (MAME src/mame/nix/pirates.cpp): sets in
-// scripts/build_mra.py SETS.
-//
-// Framework glue: hps_io, PLL, resets, the decrypting ROM download, the mod byte, inputs, the
-// 93C46 and its .nvm, the SDRAM, and the video output. The board is rtl/np_main.sv (68000,
-// memory map, RAMs) and rtl/np_video.sv.
-//
-// Clocks (rtl/pll): clk_sys 48 MHz for everything, SDRAM included; SDRAM_CLK the same lagging
-// 5555 ps (rtl/pll/pll_0002.v). 68000 16 MHz and the 6 MHz pixel by clock enables.
+// NIX Pirates and Genix Family (MAME src/mame/nix/pirates.cpp);
+// sets: scripts/build_mra.py.
+
+// Board logic: rtl/np_main.sv (CPU and memory map), rtl/np_video.sv,
+// and rtl/np_sound.sv.
+
+// clk_sys and SDRAM run at 48 MHz; SDRAM_CLK lags by 5555 ps. Clock enables provide the 16 MHz
+// CPU and 6 MHz pixel clocks (rtl/pll).
 
 module emu
 (
@@ -623,7 +622,7 @@ video_freak video_freak
 
 // DDR3: the fast load's copy while it runs, the rotator otherwise. The rotator sees DDR3 busy for
 // the whole copy: it has no reset and counts a write as taken whenever BUSY is low
-// (docs: the skill's video_audio_options.md; Arcade-Seta_MiSTer, Seta.sv).
+// (Arcade-Seta_MiSTer, Seta.sv).
 wire        ldr_ddr_req, ldr_ddr_busy, ldr_ddr_valid;
 wire [27:0] ldr_ddr_addr;
 wire [63:0] ldr_ddr_rdata;
