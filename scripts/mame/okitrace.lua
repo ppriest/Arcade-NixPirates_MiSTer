@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- The M6295's command writes (0xa00001) and the out_w bank bit (0x600001, bit 6), timed, for
 -- sim/sound_tb. Run with -wavwrite for MAME's own output of the same run.
 --

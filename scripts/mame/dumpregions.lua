@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Dump ROM regions as MAME holds them after driver init (decrypted, patched),
 -- for scripts/decrypt_model.py.
 --

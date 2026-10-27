@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Video state at several frames, for scripts/vid_capture.py: what MAME drew each frame
 -- from, dumped in the same frame_done callback that follows the drawing.
 --

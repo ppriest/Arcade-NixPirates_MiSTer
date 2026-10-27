@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Decode a VGA debug-tap screenshot back into the values the RTL was driving.
 
 The bring-up technique this supports is documented in docs/LESSONS_LEARNED.md:

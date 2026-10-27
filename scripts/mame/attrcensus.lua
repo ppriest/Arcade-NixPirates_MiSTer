@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Value census of the tile and sprite attribute words the game writes, for
 -- scripts/attr_census.py.
 --

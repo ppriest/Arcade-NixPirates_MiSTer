@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Sprites per scanline as MAME draws them, for scripts/sprite_load.py.
 --
 --   SL_OUT     output file

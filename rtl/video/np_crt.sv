@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 // CRT adjust (crt_adjust.sv, vendored) with the Arcade-Raiden_MiSTer glue:
 // moves and stretches the picture through a line buffer with native syncs.
 // H-Position is an index into 0, +1..+48, -48..-1 (wraps at 97).

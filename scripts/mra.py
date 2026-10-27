@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Build the SDRAM image an `.mra` describes, the way mra-tools-c would.
 
 Several zips per .mra: zip="a.zip|b.zip" (a set plus a BIOS zip).

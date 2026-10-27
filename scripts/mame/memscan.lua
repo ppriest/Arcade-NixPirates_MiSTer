@@ -1,3 +1,4 @@
+-- SPDX-License-Identifier: GPL-3.0-or-later
 -- Which 256-byte pages the main CPU reads and writes, from power-on, for
 -- scripts/mem_scan.py. Also the first 0x100 words of the (decrypted)
 -- "maincpu" region: the vector table as the CPU sees it.
